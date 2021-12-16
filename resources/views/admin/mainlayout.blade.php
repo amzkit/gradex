@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vuetify')
 
         @include('layouts.messages')
         @yield('content')
@@ -7,13 +7,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-1">
-@yield('leftpanel')
-
-
+            @yield('leftpanel')
         </div>
-    <div class="col-md-11">
-        @yield('rightpanel')
-    </div>
+        <div class="col-md-11">
+            @yield('rightpanel')
+        </div>
     </div>
 </div>
 @endsection
