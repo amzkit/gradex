@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/course', 'API\CourseController@index');
 Route::get('/course/schedules', 'API\CourseController@course_schedules');
 
+Route::post('/schedule/store', 'API\ScheduleController@store');
 Route::post('/schedule/update', 'API\ScheduleController@update');
 
 Route::delete('/schedule/destroy', 'API\ScheduleController@destroy');

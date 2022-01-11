@@ -8,6 +8,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// Moment for date and time format
+import moment from 'moment'
+require('moment/locale/th')
+window.moment = moment
+
+// Vuetify
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
 
@@ -26,6 +32,7 @@ Vue.use(Vuetify);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('admin-schedule', require('./components/admin/schedule.vue').default);
+Vue.component('classroom-score', require('./components/ClassroomScore.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

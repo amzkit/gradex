@@ -28,6 +28,16 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         //
+        $schedule = new Schedule;
+        $schedule->problem_id = $request->problem_id;
+        $schedule->start_time = $request->start_time;
+        $schedule->end_time = $request->end_time;
+        $schedule->save();
+
+        return response()->json([
+            'success'   =>  true,
+            'schedule'  =>  $schedule,
+        ]);
     }
 
     /**
