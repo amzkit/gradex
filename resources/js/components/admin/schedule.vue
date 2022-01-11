@@ -12,7 +12,7 @@
             </v-select>
         <v-spacer /></v-row>
 
-        <template v-if="schedules.length">
+        <template v-if="course_id!=null">
             <v-data-table
                 :headers="headers"
                 :items="schedules"
@@ -174,7 +174,7 @@
                     color="primary"
                     @click="initialize"
                 >
-                    Reset
+                    Refresh
                 </v-btn>
                 </template>
             </v-data-table>
@@ -219,13 +219,16 @@
                 editedIndex: -1,
                 editedItem: {
                     problem_id: 0,
-                    start_time: "",
-                    end_time: "",
+                    start_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
+                    //moment(this.date.split('T')[0] + 'T' + this.time.split('T')[1]).format('YYYY-MM-DD HH:mm:ss'),
+                    end_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
                 },
+
                 defaultItem: {
                     problem_id: 0,
-                    start_time: "",
-                    end_time: "",
+                    start_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
+                    //moment(this.date.split('T')[0] + 'T' + this.time.split('T')[1]).format('YYYY-MM-DD HH:mm:ss'),
+                    end_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
                 },
             }
         },
@@ -324,11 +327,27 @@
                 })
             },
 
-            save () {
+            async save () {
                 if (this.editedIndex > -1) {
-                Object.assign(this.schedules[this.editedIndex], this.editedItem)
+                    Object.assign(this.schedules[this.editedIndex], this.editedItem)
                 } else {
-                this.schedules.push(this.editedItem)
+                    // add new
+                    await axios.post("/api/schedule/store", {
+                        problem_id: editedItem.problem_id,
+                        start_time: editedItem.start_time,
+                        end_time: editedItem.end_time,
+                    }).then(response => {
+                        if (response.data.success == true) {
+                            this.schedules.push(this.editedItem)
+                            cell.problem_title = response.data.schedule.problem_title
+                        }
+                        this.loading = false
+                    })
+                    .catch(error => {
+                        console.log("getting data error", error);
+                        this.loading = false
+                    });
+
                 }
                 this.close()
             },
