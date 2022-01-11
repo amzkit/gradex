@@ -84,7 +84,7 @@
                         <v-btn
                             color="blue darken-1"
                             text
-                            @click="save"
+                            @click="store"
                         >
                             Save
                         </v-btn>
@@ -224,6 +224,7 @@
                     end_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
                 },
 
+
                 defaultItem: {
                     problem_id: 0,
                     start_time:  moment(new Date().toISOString()).format('YYYY-MM-DD HH:mm:ss'),
@@ -327,19 +328,20 @@
                 })
             },
 
-            async save () {
+            async store () {
                 if (this.editedIndex > -1) {
                     Object.assign(this.schedules[this.editedIndex], this.editedItem)
                 } else {
                     // add new
                     await axios.post("/api/schedule/store", {
-                        problem_id: editedItem.problem_id,
-                        start_time: editedItem.start_time,
-                        end_time: editedItem.end_time,
+                        course_id: this.course_id,
+                        problem_id: this.editedItem.problem_id,
+                        start_time: this.editedItem.start_time,
+                        end_time: this.editedItem.end_time,
                     }).then(response => {
                         if (response.data.success == true) {
-                            this.schedules.push(this.editedItem)
-                            cell.problem_title = response.data.schedule.problem_title
+                            this.schedules.push(response.data.schedule)
+                            //this.sche.problem_title = response.data.schedule.problem_title
                         }
                         this.loading = false
                     })

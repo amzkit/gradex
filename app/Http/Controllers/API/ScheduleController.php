@@ -29,10 +29,14 @@ class ScheduleController extends Controller
     {
         //
         $schedule = new Schedule;
+        $schedule->course_id = $request->course_id;
         $schedule->problem_id = $request->problem_id;
         $schedule->start_time = $request->start_time;
         $schedule->end_time = $request->end_time;
         $schedule->save();
+
+        $schedule = $schedule->toArray();
+        $schedule['problem_title'] = \App\Problem::find($schedule['problem_id'])->title;
 
         return response()->json([
             'success'   =>  true,
